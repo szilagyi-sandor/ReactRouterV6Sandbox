@@ -1,0 +1,36 @@
+body {
+  padding: 0;
+  margin: 0;
+
+  #app {
+    display: flex;
+    padding: 15px;
+    min-height: 100vh;
+    background: #269926;
+    flex-direction: column;
+    border: 5px solid #007400;
+
+    .btnContainer {
+      margin-bottom: 30px;
+
+      button {
+        border: 0;
+        color: #fff;
+        cursor: pointer;
+        padding: 5px 15px;
+        border-radius: 4px;
+        background: #4c4c4c;
+      }
+    }
+  }
+}
+
+*,
+::after,
+::before {
+  margin-top: 0;
+  max-width: 100%;
+  margin-bottom: 0;
+  box-sizing: border-box;
+  word-break: break-word;
+}

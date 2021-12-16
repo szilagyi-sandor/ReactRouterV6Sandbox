@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+
+import "./App.scss";
+
+import Routing from "./Modules/Routing/SmartComponents/Routing/Routing";
 
 function App() {
+  const [role, setRole] = useState("admin");
+  const [loggedIn, setloggedIn] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div id="app">
+      <div className="btnContainer">
+        <button onClick={() => setloggedIn(!loggedIn)}>
+          login {loggedIn.toString()}
+        </button>
+
+        <button
+          onClick={() => setRole(role === "admin" ? "superAdmin" : "admin")}
         >
-          Learn React
-        </a>
-      </header>
+          {role}
+        </button>
+      </div>
+
+      <Routing loggedIn={loggedIn} role={role} />
     </div>
   );
 }

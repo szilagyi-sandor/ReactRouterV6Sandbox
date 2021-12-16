@@ -1,0 +1,28 @@
+.adminLayout {
+  flex-grow: 1;
+  display: flex;
+  padding: 15px;
+  color: #000;
+  flex-direction: column;
+  background-color: #c99330;
+  border: 5px solid #b97905;
+
+  > header {
+    nav {
+      padding: 15px 0;
+
+      ul {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        list-style-type: none;
+
+        a {
+          color: #000;
+          padding: 4px 15px;
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
