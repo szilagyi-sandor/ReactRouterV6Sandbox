@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { PropsWithChildren, Suspense } from "react";
 
 import "./SiteLayout.scss";
 
@@ -9,7 +9,7 @@ import {
   getRelativePath,
 } from "../../../Modules/Routing/RouteHandlers";
 
-export default function SiteLayout() {
+export default function SiteLayout({ children }: PropsWithChildren<{}>) {
   return (
     <section className="siteLayout">
       <header>
@@ -38,7 +38,7 @@ export default function SiteLayout() {
 
       <main className="content">
         <Suspense fallback={"Site loading..."}>
-          <Outlet />
+          {children || <Outlet />}
         </Suspense>
       </main>
     </section>

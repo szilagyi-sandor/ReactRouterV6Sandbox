@@ -47,6 +47,7 @@ export default function Routing({
         <Route element={<AppLayout />}>
           <Route path={siteLayoutPathItem.path} element={<SiteLayout />}>
             <Route index element={<HomePage pathItem={homePagePathItem} />} />
+
             {[loginPagePathItem, signInPagePathItem].map((item) => (
               <Route
                 key={item.path}
@@ -102,7 +103,14 @@ export default function Routing({
           )}
 
           {adminLayoutPaths.map((item) => (
-            <Route path={`${item.path}*`} element={<RestrictedPage />} />
+            <Route
+              path={`${item.path}*`}
+              element={
+                <SiteLayout>
+                  <LoginPage pathItem={loginPagePathItem} />
+                </SiteLayout>
+              }
+            />
           ))}
 
           <Route path="*" element={<NotFoundPage />} />
