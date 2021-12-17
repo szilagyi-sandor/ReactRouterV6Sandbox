@@ -1,8 +1,11 @@
 import React, { Suspense } from "react";
 
 import { Route, Routes } from "react-router";
+import LoginGuard from "./Parts/LoginGuard/LoginGuard";
 import { checkAuth } from "../../../Auth/_Helpers/checkAuth";
+import NotFoundGuard from "./Parts/NotFoundGuard/NotFoundGuard";
 import { lazyComponents } from "../../_Constants/lazyComponents";
+import RestrictionGuard from "./Parts/RestrictionGuard/RestrictionGuard";
 import {
   homePagePathItem,
   loginPagePathItem,
@@ -52,7 +55,11 @@ export default function Routing({
               <Route
                 key={item.path}
                 path={item.path}
-                element={<LoginPage pathItem={item} />}
+                element={
+                  <NotFoundGuard condition={!loggedIn}>
+                    <LoginPage pathItem={item} />
+                  </NotFoundGuard>
+                }
               />
             ))}
 
@@ -60,57 +67,57 @@ export default function Routing({
               <Route
                 key={item.path}
                 path={item.path}
-                element={<RegisterPage pathItem={item} />}
+                element={
+                  <NotFoundGuard condition={!loggedIn}>
+                    <RegisterPage pathItem={item} />
+                  </NotFoundGuard>
+                }
               />
             ))}
 
             <Route path="*" element={<NotFoundPage />} />
           </Route>
 
-          {checkAuth(loggedIn, role) && (
-            <>
-              {adminLayoutPaths.map((item) => (
-                <Route path={item.path} element={<AdminLayout />}>
-                  <Route
-                    index
-                    element={<AdminHomePage pathItem={adminHomePagePathItem} />}
-                  />
-
-                  {checkAuth(loggedIn, role, "superAdmin") && (
-                    <Route
-                      path={page1PagePathItem.path}
-                      element={<AdminPage1Page pathItem={page1PagePathItem} />}
-                    />
-                  )}
-
-                  {[page2PagePathItem, page2Page2PathItem].map((item) => (
-                    <Route
-                      key={item.path}
-                      path={item.path}
-                      element={<AdminPage2Page pathItem={item} />}
-                    />
-                  ))}
-
-                  <Route
-                    path={page1PagePathItem.path}
-                    element={<RestrictedPage />}
-                  />
-
-                  <Route path="*" element={<NotFoundPage />} />
-                </Route>
-              ))}
-            </>
-          )}
-
           {adminLayoutPaths.map((item) => (
             <Route
-              path={`${item.path}*`}
+              path={item.path}
               element={
-                <SiteLayout>
-                  <LoginPage pathItem={loginPagePathItem} />
-                </SiteLayout>
+                <LoginGuard condition={checkAuth(loggedIn, role)}>
+                  <AdminLayout />
+                </LoginGuard>
               }
-            />
+            >
+              <Route
+                index
+                element={<AdminHomePage pathItem={adminHomePagePathItem} />}
+              />
+
+              <Route
+                path={page1PagePathItem.path}
+                element={
+                  <RestrictionGuard
+                    condition={checkAuth(loggedIn, role, "superAdmin")}
+                  >
+                    <AdminPage1Page pathItem={page1PagePathItem} />
+                  </RestrictionGuard>
+                }
+              />
+
+              {[page2PagePathItem, page2Page2PathItem].map((item) => (
+                <Route
+                  key={item.path}
+                  path={item.path}
+                  element={<AdminPage2Page pathItem={item} />}
+                />
+              ))}
+
+              <Route
+                path={page1PagePathItem.path}
+                element={<RestrictedPage />}
+              />
+
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
           ))}
 
           <Route path="*" element={<NotFoundPage />} />
